@@ -1,0 +1,119 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.navbar
+{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 75px;
+    background-color: black;
+    color: aliceblue;
+}
+.nav-links
+{
+    display:flex;
+    justify-content: flex-end;
+    list-style: none;
+    width: 91%;
+
+}
+.logo
+{
+    font-size: 30px;
+    text-decoration: line-through;
+    color:greenyellow;
+}
+.htu,
+.home,
+.hiw,
+.about,
+.login,
+.signup
+{
+    text-decoration: none;
+    color: aliceblue;
+    font-size: 20px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+
+}
+.login
+{
+    border: 1px solid pink;
+    border-radius: 5px;
+}
+.signup
+{
+    border: 1px solid pink;
+    border-radius: 5px;
+}
+.mobile-menu-icon
+{
+    display: none;
+}
+@media screen and (max-width: 780px) {
+    .logo
+    {
+        display: flex;
+        position: absolute;
+        top:15px;
+        left: 35px;
+        
+    }
+    .nav-links{
+        display: none;
+
+    }
+    .nav-links-mobile
+    {
+        position: absolute;
+        display: block;
+        list-style: none;
+        background-color: blueviolet;
+        left: 0;
+        top: 75px;
+        transition: all 0.5s ease-out;
+        width: 100px;
+
+    }
+    .home,
+    .hiw,
+    .htu,
+    .about,
+    .login,
+    .signup
+    {
+        color: white;
+        text-align: center;
+        padding: 32px;
+        width: 100%;
+        transition: all 0.5s ease;
+
+    }
+    .login
+    {
+        border: none;
+    }
+    .signup
+    {
+        border: none;
+    }
+    .mobile-menu-icon
+    {
+        display: block;
+        position: absolute;
+        font-size: 30px;
+        color: white;
+        background-color: brown;
+        border: none;
+        outline: none;
+        top: 15px;
+        right: 25px;
+        
+    }
+    
+}
