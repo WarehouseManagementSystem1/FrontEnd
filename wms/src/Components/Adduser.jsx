@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 
-function SignUp() {
+function Adduser() {
 
   const form = useForm({
     defaultValues: {
@@ -147,15 +147,13 @@ function SignUp() {
           </div>
 
           <div class="footer">
-            <button type="submit" class="btn" onSubmit={ handleformsubmit }>Register</button>
+            <button type="submit" class="btn" onSubmit={ handleformsubmit }>AddUser</button>
             <button type="reset" class="btn" onClick={() => reset()}>Rest</button>
           </div>
         </form>
         <DevTool control={control} />
         <hr></hr>
-        <div>
-          <p>Already Have Account ?<Link to="/login">Login</Link></p>
-        </div>
+        
 
 
       </div>
@@ -165,4 +163,4 @@ function SignUp() {
   )
 }
 
-export default SignUp
+export default Adduser

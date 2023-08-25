@@ -9,6 +9,15 @@ import Login from './Components/Login';
 import SignUp from './Components/SignUp';
 import Home from './Components/Home';
 import Footer from './Components/Footer';
+import Adduser from './Components/Adduser';
+import Inbound from './Components/Inbound';
+import Outbound from './Components/Outbound';
+import Audit from './Components/Audit';
+import AdminDashboard from './Components/AdminDashboard';
+import AuditDashboard from './Components/AuditDashboard';
+import UserDashboard from './Components/UserDashboard';
+import AuditHistory from './Components/AuditHistory';
+
 
 
 
@@ -26,6 +35,17 @@ function App() {
         <Route path="/about" Component={AboutUs}></Route>
         <Route path="/login" Component={Login}></Route>
         <Route path="/signup" Component={SignUp}></Route>
+        <Route path="/adduser" Component={Adduser}></Route>
+        <Route path="/inbound" Component={Inbound}></Route>
+        <Route path="/outbound" Component={Outbound}></Route>
+        <Route path="/audit" Component={Audit}></Route>
+        <Route path="/admin" Component={AdminDashboard}></Route>
+        <Route path="/auditdash" Component={AuditDashboard}></Route>
+        <Route path="/userdash" Component={UserDashboard}></Route>
+        <Route path="/audithistroy" Component={AuditHistory}></Route>
+        
+        
+        
       </Routes>
       </div> 
       <Footer />
