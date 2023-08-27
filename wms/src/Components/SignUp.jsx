@@ -55,8 +55,15 @@ function SignUp() {
       
 
     }
+    if(username =="" || usermail=="" || contact== ""|| password=="" || usermail=="wms@gmail.com") 
+    {
+      event.preventDefault();
+      alert("Please fill all the fields correctly");
+    }
 
-    fetch('https://jsonplaceholder.typicode.com/posts',{
+    else
+    {
+      fetch('https://jsonplaceholder.typicode.com/posts',{
       method:'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -68,6 +75,8 @@ function SignUp() {
       console.log(res);
     })
 
+    }
+    //.target.reset();
     
 
   }
@@ -83,7 +92,7 @@ function SignUp() {
   return (
     <>
       <div className="form">
-        <form onSubmit={handleSubmit(handleformsubmit)} noValidate method='post' action='#'>
+        <form onSubmit={handleformsubmit} noValidate method='post' action='#'>
           <div className="form-body">
 
             <div className='header'>
@@ -147,15 +156,14 @@ function SignUp() {
           </div>
 
           <div class="footer">
-            <button type="submit" class="btn" onSubmit={ handleformsubmit }>Register</button>
+            <button type="submit" class="btn" onSubmit={()=> handleformsubmit() }>SignUp</button>
             <button type="reset" class="btn" onClick={() => reset()}>Rest</button>
+           
           </div>
         </form>
         <DevTool control={control} />
         <hr></hr>
-        <div>
-          <p>Already Have Account ?<Link to="/login">Login</Link></p>
-        </div>
+        
 
 
       </div>
@@ -165,4 +173,4 @@ function SignUp() {
   )
 }
 
-export default SignUp
+export default SignUp;

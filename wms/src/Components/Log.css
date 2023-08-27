@@ -1,0 +1,33 @@
+/* Log.css */
+
+.log {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .log h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .log-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+  }
+  
+  .log-table th,
+  .log-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .log-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  

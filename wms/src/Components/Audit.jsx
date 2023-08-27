@@ -1,123 +1,140 @@
-import React, { useState } from 'react';
-import './Audit.css'; // Import the CSS file for styling
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import './Audit.css';
 
-function Audit() {
-  const [itemName, setItemName] = useState('');
-  const [areaId, setAreaId] = useState('');
-  const [rackId, setRackId] = useState('');
-  const [levelId, setLevelId] = useState('');
-  const [blockId, setBlockId] = useState('');
+const Audit = () => {
+  const { register, handleSubmit, setValue, watch, errors } = useForm();
+  const [items, setItems] = useState([]);
+  const [areas, setAreas] = useState([]);
+  const [racks, setRacks] = useState([]);
+  const [levels, setLevels] = useState([]);
+  const [blocks, setBlocks] = useState([]);
+  const selectedItemId = watch('selectedItem');
+  const selectedAreaId = watch('selectedArea');
+  const selectedRackId = watch('selectedRack');
+  const selectedLevelId = watch('selectedLevel');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Custom validation: Check if item name contains only letters and spaces
-    const itemNamePattern = /^[A-Za-z\s]+$/;
-    if (!itemNamePattern.test(itemName)) {
-      alert('Please enter a valid item name (letters and spaces only).');
-      return;
-    }
-
-    // Basic form validation
-    if (!itemName || !areaId || !rackId || !levelId || !blockId) {
-      alert('Please fill out all fields.');
-      return;
-    }
-
-    // Prepare data to send in the request body
-    const auditData = {
-      itemName,
-      areaId,
-      rackId,
-      levelId,
-      blockId,
+  useEffect(() => {
+    // Fetch items list from the backend
+    const fetchItems = async () => {
+      try {
+        const response = await fetch('your-items-api-url');
+        const data = await response.json();
+        setItems(data);
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
     };
+    fetchItems();
+  }, []);
 
-    // Replace with your actual API endpoint URL
-    const apiEndpoint = 'YOUR_API_ENDPOINT_URL';
-
+  const onSubmit = async (data) => {
     try {
-      // Send the audit request to the API
-      const response = await fetch(apiEndpoint, {
+      // Make an API request to send audit data to the backend
+      const response = await fetch('your-backend-api-url', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(auditData),
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        // Simulate successful API response
-        alert(`Audit for ${itemName} processed successfully.`);
-        setItemName('');
-        setAreaId('');
-        setRackId('');
-        setLevelId('');
-        setBlockId('');
+        alert('Audit data submitted successfully!');
       } else {
-        // Handle unsuccessful response
-        alert('Failed to process audit.');
+        const responseData = await response.json();
+        alert('Failed to submit audit data: ' + responseData.error);
       }
     } catch (error) {
-      alert('An error occurred while processing audit.');
+      console.error('Error submitting audit data:', error);
     }
+    //{errors.selectedItem && <p className="error-msg">{errors.selectedItem.message}</p>}
+    // {errors.selectedArea && <p className="error-msg">{errors.selectedArea.message}</p>}
+    //{errors.selectedArea && <p className="error-msg">{errors.selectedArea.message}</p>}
+    //{errors.selectedRack && <p className="error-msg">{errors.selectedRack.message}</p>}
+    //{errors.selectedLevel && <p className="error-msg">{errors.selectedLevel.message}</p>}
+    //{errors.selectedBlock && <p className="error-msg">{errors.selectedBlock.message}</p>}
   };
 
   return (
-    <div className="audit-container">
-      <h1>Audit</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label>Item Name:</label>
-          <input
-            type="text"
-            value={itemName}
-            onChange={(e) => setItemName(e.target.value)}
-            required
-          />
+    <div className="audit">
+      <form className="audit-form" onSubmit={handleSubmit(onSubmit)}>
+        <h2>Audit</h2>
+        <div className="form-group">
+          <select name="selectedItem" {...register("selectedItem",{ required: 'Item selection is required' })}>
+            <option value="">Select Item</option>
+            {items.map((item) => (
+              <option key={item.itemId} value={item.itemId}>
+                {item.itemName}
+              </option>
+            ))}
+          </select>
+          
         </div>
-        <div className="input-group">
-          <label>Area ID:</label>
-          <input
-            type="text"
-            value={areaId}
-            onChange={(e) => setAreaId(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>Rack ID:</label>
-          <input
-            type="text"
-            value={rackId}
-            onChange={(e) => setRackId(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>Level ID:</label>
-          <input
-            type="text"
-            value={levelId}
-            onChange={(e) => setLevelId(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>Block ID:</label>
-          <input
-            type="text"
-            value={blockId}
-            onChange={(e) => setBlockId(e.target.value)}
-            required
-          />
-        </div>
-        <button className="submit-button" type="submit">
-          Process Audit
-        </button>
+
+        {selectedItemId && (
+          <div className="form-group">
+            <select name="selectedArea" {...register("selectedArea",{ required: 'Area selection is required' })}>
+              <option value="">Select Area</option>
+              {/* Fetch and populate areas based on selectedItemId */}
+              {/* Similar logic for fetching racks, levels, and blocks */}
+            </select>
+           
+          </div>
+        )}
+        
+        {/* Select Area */}
+        {selectedItemId && (
+          <div className="form-group">
+            <select name="selectedArea" {...register("selectedArea",{ required: 'Area selection is required' })}>
+              <option value="">Select Area</option>
+              {areas.map((area) => (
+                <option key={area.areaId} value={area.areaId}>
+                  {area.areaName}
+                </option>
+              ))}
+            </select>
+            
+          </div>
+        )}
+
+        {/* Select Rack */}
+        {selectedAreaId && (
+          <div className="form-group">
+            <select name="selectedRack" {...register("selectedRack",{ required: 'Rack selection is required' })}>
+              <option value="">Select Rack</option>
+              {/* Populate racks based on selectedAreaId */}
+            </select>
+            
+          </div>
+        )}
+
+        {/* Select Level */}
+        {selectedRackId && (
+          <div className="form-group">
+            <select name="selectedLevel" {...register("selectedLevel",{ required: 'Level selection is required' })}>
+              <option value="">Select Level</option>
+              {/* Populate levels based on selectedRackId */}
+            </select>
+            
+          </div>
+        )}
+
+        {/* Select Block */}
+        {selectedLevelId && (
+          <div className="form-group">
+            <select name="selectedBlock" {...register("selectedBlock",{ required: 'Block selection is required' })}>
+              <option value="">Select Block</option>
+              {/* Populate blocks based on selectedLevelId */}
+            </select>
+            
+          </div>
+        )}
+
+        <button type="submit" className="btn btn-primary">Transfer</button>
       </form>
     </div>
   );
-}
+};
 
 export default Audit;

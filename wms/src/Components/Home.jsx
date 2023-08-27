@@ -18,10 +18,11 @@ function Home() {
             <Link to="/inbound">Inbound</Link><br></br>
             <Link to="/outbound">Outbound</Link><br></br>
             <Link to='/audit'>Audit</Link><br></br>
-            <Link to='/admin'>Admin</Link><br></br>
+            
             <Link to='/auditdash'>Auditor</Link><br></br>
             <Link to='/userdash'>User</Link><br></br>
-            
+            <Link to='/addwarehouse'>Addwarehouse</Link><br></br>
+            <Link to='/addarea'>AddArea</Link>
             
             
            </div>

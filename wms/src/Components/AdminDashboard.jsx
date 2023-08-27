@@ -2,32 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './AdminDashbord.css';
 
-function AdminDashboard() {
+const OwnerDashboard = () => {
   return (
-    <div className="admin-dashboard">
-      <h1>Welcome, Admin User!</h1>
-      <div className="button-container">
-        <Link to="/add-user" className="dashboard-button">
-          Add User
-        </Link>
-        <Link to="/add-warehouse" className="dashboard-button">
-          Add Warehouse
-        </Link>
-        <Link to="/inbound" className="dashboard-button">
-          Inbound
-        </Link>
-        <Link to="/outbound" className="dashboard-button">
-          Outbound
-        </Link>
-        <Link to="/view-inventory" className="dashboard-button">
-          View Inventory
-        </Link>
-        <Link to="/audit" className="dashboard-button">
-          Audit
-        </Link>
+    <div className="owner-dashboard">
+      <h2>Welcome, Admin User!</h2>
+      <div className="dashboard-buttons">
+        <Link to="/adduser" className="btn">Add User</Link>
+        <Link to="/addwarehouse" className="btn">Add Warehouse</Link>
+        <Link to="/viewinventory" className="btn">View Inventory</Link>
+        <Link to="/log" className="btn">Log</Link>
       </div>
     </div>
   );
-}
+};
 
-export default AdminDashboard;
+export default OwnerDashboard;

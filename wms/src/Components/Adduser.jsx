@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 
-function Adduser() {
+function AddUser() {
 
   const form = useForm({
     defaultValues: {
@@ -22,7 +22,11 @@ function Adduser() {
   /*const onSubmit = (data) => {
     console.log("Submit", data);
   }*/
+  const [userType, setUserType] = useState("");
+  
   const[passval,setpassval] = useState(false);
+
+
   const username = watch('username');
   const usermail = watch('email');
   const contact = watch('contact')
@@ -36,46 +40,57 @@ function Adduser() {
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const handleformsubmit  = (event)=>{
-    //event.preventDefault();
-    if(pass === cpass)
-    {
-      setpassval(false);
-    }
-    else
-    {
-      setpassval(true);
-      const emsg = "Password and confirm password must be same";
-    }
+    event.preventDefault();
+    
     
     const datasubmit = {
       username,
       usermail,
       contact,
       pass,
+      userType
       
 
     }
-
-    fetch('https://jsonplaceholder.typicode.com/posts',{
-      method:'POST',
+    if(username =="" || usermail=="" || contact== ""|| password=="" || usermail=="wms@gmail.com") 
+    {
+      event.preventDefault();
+      alert("Please fill all the fields correctly");
+    }
+    else{
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      crossDomain: true,
       headers: {
-        'Content-type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
-      body:JSON.stringify(datasubmit)
-
-    }).then(res=>res.json())
-    .then(res=>{
-      console.log(res);
+      body: JSON.stringify({
+      username,
+      usermail,
+      contact,
+      pass,
+      userType,
+      }),
     })
-
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "userRegister");
+        /*if (data.status == "OK") {
+          alert("Registration Successful");
+        } else {
+          alert("Something went wrong");
+        }*/
+        
+      });
+    }
+    
+   event.target.reset();
     
 
   }
- 
-
-
-
-  useEffect(() => {
+   useEffect(() => {
     if (isSubmitSuccessful) {
       reset()
     }
@@ -83,14 +98,36 @@ function Adduser() {
   return (
     <>
       <div className="form">
-        <form onSubmit={handleSubmit(handleformsubmit)} noValidate method='post' action='#'>
+        <form onSubmit={handleformsubmit} noValidate method='post' action='#'>
           <div className="form-body">
 
             <div className='header'>
-              <h2>SignUp</h2>
+              <h2>AddUser</h2>
             </div>
             <hr></hr>
-            <div className="username">
+            <div className='username'>
+            Register As:&nbsp;
+            <input
+              
+              type="radio"
+              name="usertype"
+              value="User"
+              onChange={(e) => setUserType(e.target.value)}
+            />
+            User
+            <input
+           
+              type="radio"
+              name="usertype"
+              value="Auditor"
+              onChange={(e) => setUserType(e.target.value)}
+            />
+            Auditor
+          </div>
+          
+          
+          
+              <div className="username">
               <label className="form__label" for="username">Username </label>
               <input className="form__input" type="username" id="username" placeholder="Username" name='username'{...register("username", {
                 required: "Please Check the username",maxLength:10
@@ -147,13 +184,16 @@ function Adduser() {
           </div>
 
           <div class="footer">
-            <button type="submit" class="btn" onSubmit={ handleformsubmit }>AddUser</button>
-            <button type="reset" class="btn" onClick={() => reset()}>Rest</button>
+            <button type="submit" class="btn" onSubmit={()=> handleformsubmit() }>AddUser</button>
+            <button type="reset" class="btn" onClick={() => reset()}>Reset</button>
+            <Link to='/admin'> <button type="reset" class="btn" >Back</button></Link>
           </div>
         </form>
         <DevTool control={control} />
         <hr></hr>
-        
+        <div>
+          <p>Already Have Account ?<Link to="/login">Login</Link></p>
+        </div>
 
 
       </div>
@@ -163,4 +203,4 @@ function Adduser() {
   )
 }
 
-export default Adduser
+export default AddUser;

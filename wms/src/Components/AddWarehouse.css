@@ -1,6 +1,6 @@
-/* Outbound.css */
+/* AddWarehouse.css */
 
-.outbound {
+.add-warehouse {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,7 +9,7 @@
     background-color: #f8f9fa;
   }
   
-  .outbound-form {
+  .add-warehouse-form {
     width: 100%;
     max-width: 400px;
     padding: 20px;
@@ -19,7 +19,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
-  .outbound-form h2 {
+  .add-warehouse-form h2 {
     font-size: 24px;
     margin-bottom: 20px;
   }
@@ -28,7 +28,7 @@
     margin-bottom: 15px;
   }
   
-  .form-group input[type="text"] {
+  .form-group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -48,29 +48,6 @@
   
   .btn-primary:hover {
     background-color: #0056b3;
-  }
-  
-  .outbound-details {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .outbound-details h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .outbound-details ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .outbound-details li {
-    margin-bottom: 10px;
   }
   
   .error-msg {
