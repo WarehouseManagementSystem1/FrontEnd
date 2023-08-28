@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './AdminDashbord.css';
+import '../Css/AdminDashbord.css';
 import { useEffect } from 'react';
 import Home from './Home';
 

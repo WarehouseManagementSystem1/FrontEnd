@@ -2,14 +2,20 @@ import React, { useState } from 'react'
 import { Link, NavLink} from 'react-router-dom';
 import { Nav } from 'react-bootstrap';
 import '../App.css';
-import './NavBar.css';
+import '../Css/NavBar.css';
+
+
+import logoo from './wms.png';
 
 function NavBar() {
+  // <h3 className='logo'>WMS</h3>
     const[isMobile,setIsMobile] = useState(false);
   return (
     <>
      <Nav className = "navbar">
-        <h3 className='logo'>WMS</h3>
+     < div className="logo">
+      <img src={logoo} alt="Logo" />
+      </div>
         <ul className={isMobile ? "nav-links-mobile":"nav-links"} onClick={()=>setIsMobile(false)}>
             <Link to="/" className='home'><li>Home</li></Link>
             <Link to="/hiw" className='hiw'><li>How It Works</li></Link>

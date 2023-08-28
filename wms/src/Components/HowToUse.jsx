@@ -1,5 +1,7 @@
 import React from 'react';
-import './HowItworks.css';
+import '../Css/HowItworks.css';
+
+
 function HowToUse() {
   return (
     <>

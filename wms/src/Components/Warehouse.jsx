@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './AddWarehouse.css';
+import '../Css/AddWarehouse.css';
 import AddArea from './AddArea';
 
 const Warehouse = () => {

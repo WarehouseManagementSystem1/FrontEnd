@@ -3,6 +3,12 @@
     padding: 0;
     box-sizing: border-box;
 }
+.logo img {
+    background-color: greenyellow;
+    border-radius: 20px;
+    height: 50px;
+    width: 100px;
+  }
 .navbar
 {
     display: flex;

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './ViewInventory.css';
+import '../Css/ViewInventory.css';
+
+
 
 const ViewInventory = () => {
    const { register, handleSubmit, errors } = useForm();

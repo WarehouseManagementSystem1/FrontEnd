@@ -1,6 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import './Inbound.css';
+import '../Css/Inbound.css';
+
+
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -9,14 +11,16 @@ const Inbound = () => {
   const [rackNumber, setRackNumber] = useState('');
   const [levelNumber, setLevelNumber] = useState('');
   const [blockNumber, setBlockNumber] = useState('');
-  const  [enable,setEnable] = useState(false);
-  const { register,errors,watch } = useForm();
-          const itemName = watch('itemname');
-          const unitsInItem  = watch('units');
-          const itemLength = watch('itemlength');
-          const itemHeight = watch('itemheight');
-          const itemWidth = watch('itemwidth');
-;          const warehouseId = localStorage.getItem('warehouseid')
+  const  [enable,setEnable] = useState(true);
+  const { register,watch,formState } = useForm({mode:"all"});
+  const { errors, isSubmitting, isSubmitted, isSubmitSuccessful } = formState;
+  const itemName = watch('itemname');
+  const unitsInItem  = watch('units');
+  const itemLength = watch('itemlength');
+  const itemHeight = watch('itemheight');
+  const itemWidth = watch('itemwidth');
+ const warehouseId = localStorage.getItem('warehouseid')
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -57,6 +61,7 @@ const Inbound = () => {
     } catch (error) {
       console.error('Error sending or receiving data:', error);
     }
+    e.target.reset();
 
   
   };
@@ -77,7 +82,7 @@ const Inbound = () => {
             placeholder="Item Name"
             {...register("itemname",{ required: 'Item name is required' })}
           />
-          
+           {errors.itemname && <p className="error-msg">{errors.itemname.message}</p>}
         </div>
         <div className="form-group">
           <input
@@ -85,9 +90,12 @@ const Inbound = () => {
             name="units"
             id="units"
             placeholder="Units in Item"
-            {...register("units",{ required: 'Units are required', min: 1 })}
+            {...register("units",{ required: 'Units are required', pattern: {
+              value: /^[+]?\d*\.?\d+$/,
+              message: 'Please enter a valid positive number',
+            }, })}
           />
-          
+          {errors.units && <p className="error-msg">{errors.units.message}</p>}
         </div>
         <div className="form-group">
           <input
@@ -95,9 +103,12 @@ const Inbound = () => {
             name="itemlength"
             id="itemlength"
             placeholder="Item Length"
-            {...register("itemlength",{ required: 'Item length is required', min: 0 })}
+            {...register("itemlength",{ required: 'Item length is required', pattern: {
+              value: /^[+]?\d*\.?\d+$/,
+              message: 'Please enter a valid positive number',
+            },  })}
           />
-          
+        {errors.itemlength && <p className="error-msg">{errors.itemlength.message}</p>}  
         </div>
         <div className="form-group">
           <input
@@ -105,9 +116,12 @@ const Inbound = () => {
             name="itemheight"
             id="itemheight"
             placeholder="Item Height"
-            {...register("itemheight",{ required: 'Item height is required', min: 0 })}
+            {...register("itemheight",{ required: 'Item height is required', pattern: {
+              value: /^[+]?\d*\.?\d+$/,
+              message: 'Please enter a valid positive number',
+            }, })}
           />
-         
+        {errors.itemheight && <p className="error-msg">{errors.itemheight.message}</p>}  
         </div>
         <div className="form-group">
           <input
@@ -115,9 +129,12 @@ const Inbound = () => {
             name="itemwidth"
             id='itemwidth'
             placeholder="Item Width"
-            {...register("itemwidth",{ required: 'Item width is required', min: 0 })}
+            {...register("itemwidth",{ required: 'Item width is required', pattern: {
+              value: /^[+]?\d*\.?\d+$/,
+              message: 'Please enter a valid positive number',
+            }, })}
           />
-          
+        {errors.itemWidth && <p className="error-msg">{errors.itemwidth.message}</p>}  
         </div>
          <button type="submit" className="btn btn-primary">Check</button>
         {enable?<button type="submit" className="btn btn-primary">Submit</button>:<button type="submit" className="btn btn-primary" disabled>Submit</button>}

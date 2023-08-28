@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import './Log.css';
+import '../Css/Log.css';
+
+
 
 const Log = () => {
   const { register, handleSubmit, setValue, errors } = useForm();

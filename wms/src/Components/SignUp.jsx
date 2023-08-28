@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
-import './registration.css'
+import '../Css/registration.css';
+
+
 import { useState, setState } from 'react';
 import { useForm } from 'react-hook-form';
 import { DevTool } from "@hookform/devtools";

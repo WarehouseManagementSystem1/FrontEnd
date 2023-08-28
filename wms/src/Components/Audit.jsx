@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import './Audit.css';
+import '../Css/Audit.css';
+
 
 const Audit = () => {
   const { register, handleSubmit, setValue, watch, errors } = useForm();

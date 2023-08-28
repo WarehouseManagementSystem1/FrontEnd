@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './Outbound.css';
+import '../Css/Outbound.css';
+
+
 import { Link } from 'react-router-dom';
 const Outbound = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState } = useForm();
+  const { errors, isSubmitting, isSubmitted, isSubmitSuccessful } = formState;
   const [outboundData, setOutboundData] = useState([]);
   const [enable,setEnable] = useState(false);
 
@@ -43,7 +46,7 @@ const Outbound = () => {
             placeholder="Item Name"
             {...register("itemname",{ required: 'Item name is required' })}
           />
-          
+        {errors.itemname && <p className="error-msg">{errors.itemname.message}</p>}
         </div>
         <button type="submit" className="btn btn-primary">Check</button>
        {enable? <button type="submit" className="btn btn-primary">Deliver</button>: <button type="submit" className="btn btn-primary" disabled>Deliver</button>}
