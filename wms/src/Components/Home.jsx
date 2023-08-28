@@ -21,7 +21,7 @@ function Home() {
             
             <Link to='/auditdash'>Auditor</Link><br></br>
             <Link to='/userdash'>User</Link><br></br>
-            <Link to='/addwarehouse'>Addwarehouse</Link><br></br>
+            <Link to='/warehouse'>AddWarehouse</Link><br></br>
             <Link to='/addarea'>AddArea</Link>
             
             

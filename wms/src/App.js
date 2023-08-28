@@ -16,10 +16,11 @@ import Audit from './Components/Audit';
 import AdminDashboard from './Components/AdminDashboard';
 import AuditDashboard from './Components/AuditDashboard';
 import UserDashboard from './Components/UserDashboard';
-import AddWarehouse from './Components/AddWarehouse';
+import Warehouse from './Components/Warehouse';
 import AddArea from './Components/AddArea';
 import ViewInventory from './Components/ViewInventory';
 import Log from './Components/Log';
+
 
 
 
@@ -46,7 +47,7 @@ function App() {
         <Route path="/admin" Component={AdminDashboard}></Route>
         <Route path="/auditdash" Component={AuditDashboard}></Route>
         <Route path="/userdash" Component={UserDashboard}></Route>
-        <Route path="/addwarehouse" Component={AddWarehouse}></Route>
+        <Route path="/warehouse" Component={Warehouse}></Route>
         <Route path="/addarea" Component={AddArea}></Route>
         <Route path="/viewinventory" Component={ViewInventory}></Route>
         <Route path="/log" Component={Log}></Route>

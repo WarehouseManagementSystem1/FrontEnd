@@ -40,4 +40,9 @@ body{
 .error{
     color: red;
 }
+.radio
+{
+    border: 2px solid black;
+    margin: auto;
+}
 

@@ -5,12 +5,13 @@ import './Log.css';
 const Log = () => {
   const { register, handleSubmit, setValue, errors } = useForm();
   const [logs, setLogs] = useState([]);
+  const warehouseid = localStorage.getItem('warehouseid');
 
   useEffect(() => {
     // Fetch log data from the backend
     const fetchLogs = async () => {
       try {
-        const response = await fetch('your-logs-api-url');
+        const response = await fetch(`your-backend-api-url/${warehouseid}`);
         const data = await response.json();
         setLogs(data);
       } catch (error) {

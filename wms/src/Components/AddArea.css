@@ -1,12 +1,13 @@
 /* AddArea.css */
 
 .add-area {
+    margin-top: 75px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f8f9fa;
+   
   }
   
   .add-area-form {

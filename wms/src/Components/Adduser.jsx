@@ -22,16 +22,17 @@ function AddUser() {
   /*const onSubmit = (data) => {
     console.log("Submit", data);
   }*/
-  const [userType, setUserType] = useState("");
   
   const[passval,setpassval] = useState(false);
 
 
-  const username = watch('username');
+  const firstname = watch('firstname');
+  const lastname = watch('lastname');
   const usermail = watch('email');
   const contact = watch('contact')
   const pass = watch('password');
   const cpass = watch('confirmPassword');
+  const usertype = watch('userType');
   
   
 
@@ -44,15 +45,16 @@ function AddUser() {
     
     
     const datasubmit = {
-      username,
+      firstname,
+      lastname,
       usermail,
       contact,
       pass,
-      userType
+      usertype
       
 
     }
-    if(username =="" || usermail=="" || contact== ""|| password=="" || usermail=="wms@gmail.com") 
+    if(firstname =="" ||lastname=="" || usermail=="" || contact== ""|| password=="" || usermail=="wms@gmail.com") 
     {
       event.preventDefault();
       alert("Please fill all the fields correctly");
@@ -67,11 +69,12 @@ function AddUser() {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-      username,
+      firstname,
+      lastname,
       usermail,
       contact,
       pass,
-      userType,
+      usertype,
       }),
     })
       .then((res) => res.json())
@@ -105,32 +108,42 @@ function AddUser() {
               <h2>AddUser</h2>
             </div>
             <hr></hr>
-            <div className='username'>
-            Register As:&nbsp;
-            <input
+            <div>
               
+          <label>
+            <input
               type="radio"
-              name="usertype"
-              value="User"
-              onChange={(e) => setUserType(e.target.value)}
+              name="userType"
+              value="user"
+              {...register("userType",{ required: 'Please select user type' })}
             />
             User
+          </label>
+          <label>
             <input
-           
               type="radio"
-              name="usertype"
-              value="Auditor"
-              onChange={(e) => setUserType(e.target.value)}
+              name="userType"
+              value="auditor"
+              {...register("userType",{ required: 'Please select user type' })}
             />
             Auditor
-          </div>
+          </label>
+          {errors.userType && <p className="error-msg">{errors.userType.message}</p>}
+        </div>
           
           
           
               <div className="username">
-              <label className="form__label" for="username">Username </label>
-              <input className="form__input" type="username" id="username" placeholder="Username" name='username'{...register("username", {
-                required: "Please Check the username",maxLength:10
+              <label className="form__label" for="firstname">FirstName </label>
+              <input className="form__input" type="firstname" id="firstname" placeholder="FirstName" name='firstname'{...register("firstname", {
+                required: "Please Check the FirstName",maxLength:10
+              })} />
+            </div>
+            <p className='error'>{errors.username?.message}</p>
+            <div className="username">
+              <label className="form__label" for="lastname">LastName </label>
+              <input className="form__input" type="lastname" id="lastname" placeholder="LastName" name='lastname'{...register("lastname", {
+                required: "Please Check the LastName",maxLength:10
               })} />
             </div>
             <p className='error'>{errors.username?.message}</p>

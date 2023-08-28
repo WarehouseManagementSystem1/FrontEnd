@@ -22,68 +22,76 @@ function SignUp() {
   /*const onSubmit = (data) => {
     console.log("Submit", data);
   }*/
-  const[passval,setpassval] = useState(false);
-  const username = watch('username');
+
+  const [passval, setpassval] = useState(false);
+
+
+
+  const username = watch('lastname');
   const usermail = watch('email');
   const contact = watch('contact')
   const pass = watch('password');
   const cpass = watch('confirmPassword');
-  
-  
+  const usertype = watch('userType');
+
+
 
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
-  const handleformsubmit  = (event)=>{
-    //event.preventDefault();
-    if(pass === cpass)
-    {
-      setpassval(false);
-    }
-    else
-    {
-      setpassval(true);
-      const emsg = "Password and confirm password must be same";
-    }
-    
+  const handleformsubmit = (event) => {
+    event.preventDefault();
+
+
     const datasubmit = {
+     
       username,
       usermail,
       contact,
       pass,
-      
+      usertype
+
 
     }
-    if(username =="" || usermail=="" || contact== ""|| password=="" || usermail=="wms@gmail.com") 
-    {
+    if (username === "" || usermail === "" || contact === "" || password === "" || usermail === "wms@gmail.com") {
       event.preventDefault();
       alert("Please fill all the fields correctly");
     }
+    else {
+      fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+         
+          username,
+          usermail,
+          contact,
+          pass,
+          usertype,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data, "userRegister");
+          /*if (data.status == "OK") {
+            alert("Registration Successful");
+          } else {
+            alert("Something went wrong");
+          }*/
 
-    else
-    {
-      fetch('https://jsonplaceholder.typicode.com/posts',{
-      method:'POST',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body:JSON.stringify(datasubmit)
-
-    }).then(res=>res.json())
-    .then(res=>{
-      console.log(res);
-    })
-
+        });
     }
-    //.target.reset();
-    
+
+    event.target.reset();
+
 
   }
- 
-
-
-
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset()
@@ -99,10 +107,17 @@ function SignUp() {
               <h2>SignUp</h2>
             </div>
             <hr></hr>
+            <div>
+            </div>
+
+
+
+            
+            <p className='error'>{errors.username?.message}</p>
             <div className="username">
-              <label className="form__label" for="username">Username </label>
-              <input className="form__input" type="username" id="username" placeholder="Username" name='username'{...register("username", {
-                required: "Please Check the username",maxLength:10
+              <label className="form__label" for="lastname">User Name </label>
+              <input className="form__input" type="lastname" id="lastname" placeholder="User Name" name='lastname'{...register("lastname", {
+                required: "Please Check the LastName", maxLength: 10
               })} />
             </div>
             <p className='error'>{errors.username?.message}</p>
@@ -122,14 +137,14 @@ function SignUp() {
                     fieldValue !== "admin@example.com" || "Enter a diffrent Email Address"
                   );
                 },
-                
+
               })} />
             </div>
             <p className='error'>{errors.email?.message}</p>
             <div className="contact">
               <label className="form__label" for="contact">Contact No </label>
               <input className="form__input" type="number" id="contact" placeholder="Contact Number" name='contact'{...register("contact", {
-                required: "Please Check the contact",maxLength:13
+                required: "Please Check the contact", maxLength: 13
               })} />
             </div>
             <p className='error'>{errors.contact?.message}</p>
@@ -143,27 +158,29 @@ function SignUp() {
             <div className="confirm-password">
               <label className="form__label" for="confirmPassword">Confirm Password </label>
               <input className="form__input" type="password" id="confirmPassword"
-              placeholder="Confirm Password" {...register("confirmPassword", {
-                required: "Confirm Password is Required",
-                validate: (val) => {
-                  if (watch('password') != val) {
-                    return "Your passwords do no match";
+                placeholder="Confirm Password" {...register("confirmPassword", {
+                  required: "Confirm Password is Required",
+                  validate: (val) => {
+                    if (watch('password') != val) {
+                      return "Your passwords do no match";
+                    }
                   }
-                }
-              })} />
+                })} />
             </div>
             <p className='error'>{errors.confirmPassword?.message}</p>
           </div>
 
           <div class="footer">
-            <button type="submit" class="btn" onSubmit={()=> handleformsubmit() }>SignUp</button>
-            <button type="reset" class="btn" onClick={() => reset()}>Rest</button>
-           
+            <button type="submit" class="btn" onSubmit={() => handleformsubmit()}>Register</button>
+            <button type="reset" class="btn" onClick={() => reset()}>Reset</button>
+            
           </div>
         </form>
         <DevTool control={control} />
         <hr></hr>
-        
+        <div>
+          <p>Already Have Account ?<Link to="/login">Login</Link></p>
+        </div>
 
 
       </div>

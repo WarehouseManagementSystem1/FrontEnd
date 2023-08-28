@@ -1,162 +1,142 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
 import "./Login.css";
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import UserDashboard from "./UserDashboard";
 import AdminDashboard from "./AdminDashboard";
 import AuditDashboard from "./AuditDashboard";
-function App() {
-  // React States
-  
-  const [errorMessages, setErrorMessages] = useState({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [uname,setuname] = useState("");
-  const [pass,setpass] = useState("");
 
-  const form = useForm();
-  const { register, control,formState, watch, reset } = form;
+const App = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [redirectTo, setRedirectTo] = useState(null);
 
-  // User Login info
   const database = [
     {
-      username: "chavanajit6282@gmail.com",
-      password: "A@jit@777"
+      email: "user@example.com",
+      password: "password",
+      role: "user",
     },
     {
-      username: "ajitmobile9359277751@gmail.com",
-      password: "pass2"
+      email: "admin@example.com",
+      password: "adminpassword",
+      role: "admin",
     },
     {
-      username: "wms@gmail.com",
-      password: "wms@123"
+      email: "auditor@example.com",
+      password: "auditorpassword",
+      role: "auditor",
+      
     },
     {
-      username:"auditor@gmail.com",
-      password:"pass4"
-    }
+      email: "chavanajit6282@gmail.com",
+      password: "A@jit@777",
+      role: "admin",
+      
+    },
+    
   ];
 
-  const errors = {
-    name: "invalid username",
-    password: "invalid password"
-  };
-  const eaddress = watch("name");
-  const epassword = watch("password");
-  
+  const { watch , register, handleSubmit, formState: { errors } } = useForm();
 
-  const handleSubmit = async (event) => {
-    //Prevent page reload
-    event.preventDefault();
+  const onSubmit = (data) => {
+    const user = database.find((user) => user.email === data.email);
 
-    /*try {
-      // Make API request to login
-      const response = await fetch('your-api-endpoint/login', {
-        method: 'POST',
+    if (user && user.password === data.password) {
+      setErrorMessage("");
+      setRedirectTo(user.role);
+    } else {
+      setErrorMessage("Invalid email or password");
+    }
+    localStorage.setItem("email", watch('email'));
+
+    /**try {
+      const response = await fetch("your-api-endpoint/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ eaddress, epassword }),
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
 
-      const data = await response.json();
-
-      // Check if the API response contains userType and warehouseId
-      if (data.userType && data.warehouseId) {
-        onLogin(data.userType, data.warehouseId); // Call the onLogin function with received userType and warehouseId
+      if (response.ok) {
+        const userData = await response.json();
+        // userData contains userId, username, ownerId, userType, etc.
+        console.log(userData);
+        setError(null);
       } else {
-        console.error('Invalid response from the server.');
+        setError("Invalid email or password.");
       }
     } catch (error) {
-      console.error('An error occurred during login:', error);
-    }
-    localStorage.setItem('userType', data.userType);
-    localStorage.setItem('warehouseId', data.warehouseId);
-    const usertype = localStorage.getItem('userType');
-    const warehouseId = localStorage.getItem('warehouseId');*/
+      console.error("An error occurred during login:", error);
+      setError("An error occurred during login.");
+     }
 
-
-    var { name, password } = document.forms[0];
-
-    // Find user login info
-    const userData = database.find((user) => user.username === name.value);
-    setuname(name.value);
-    setpass(password.value);
-    // Compare user info
-    if (userData) {
-      if (userData.password !== password.value) {
-        // Invalid password
-        setErrorMessages({ name: "pass", message: errors.password });
-      } else {
-        setIsSubmitted(true);
+     const email = watch('email');
+     const password = watch('password');
+     if(email != userData.email || password != userData.password)
+     {
+      alert('Invalid email or password');
+      
+     }
+     else
+     {
+      
+      
+      if(userData.userType === 'Admin') {
+        setRedirectTo('admin');
       }
-    } else {
-      // Username not found
-      setErrorMessages({ name: "uname", message: errors.name });
-    }
-    
-    console.log(eaddress+"name");
+      else if(userData.userType === 'Auditor') {
+        setRedirectTo('auditor');
+      }
+      else if(userData.userType === 'User') {
+        setRedirectTo('user');
+      }
+
+      
+     }
+     
+     
+     
+     
+     */
   };
 
-  // Generate JSX code for error message
-  const renderErrorMessage = (name) =>
-    name === errorMessages.name && (
-      <div className="error">{errorMessages.message}</div>
-    );
-
-  // JSX code for login form
-  const renderForm = (
-    <div className="form">
-      <h1>Login Form</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="input-container">
-          <label>Email </label>
-          <input type="text" name="name" required id="name" {...register("name")}/>
-          {renderErrorMessage("uname")}
+  return (
+    <div className="form-container">
+      
+      {redirectTo ? (
+        <div className="dashboard-container">
+          {redirectTo === "user" && <UserDashboard />}
+          {redirectTo === "admin" && <AdminDashboard />}
+          {redirectTo === "auditor" && <AuditDashboard />}
         </div>
-        <div className="input-container">
-          <label>Password </label>
-          <input type="password" name="password" required id="password"{...register("password")} />
-          {renderErrorMessage("pass")}
-        </div>
-        <div className="button-container">
-          <input type="submit" />
-        </div>
-        <br></br>
-        <div>
-        <p>Create Account <Link to="/signup">SignUp</Link></p>
-        </div>
-      </form>
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)} className="login-form">
+          <h1>Login Form</h1>
+          <div className="input-container">
+            <label>Email</label>
+            <input
+              type="email"
+              {...register("email", { required: true })}
+            />
+            {errors.email && <p className="error">Email is required</p>}
+          </div>
+          <div className="input-container">
+            <label>Password</label>
+            <input
+              type="password"
+              {...register("password", { required: true })}
+            />
+            {errors.password && <p className="error">Password is required</p>}
+          </div>
+          <button type="submit">Login</button>
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+        </form>
+      )}
     </div>
   );
-
-  if(isSubmitted && uname == "wms@gmail.com" && pass =="wms@123")
-  {
-    return (
-      <div>
-        <UserDashboard/>
-      </div>
-    );
-  }
-  else if(isSubmitted && uname == "auditor@gmail.com" && pass =="pass4")  
-  {
-    return (
-      <div>
-        <AuditDashboard/>
-      </div>
-    );
-  }
-  else
-  {
-    return (
-      <>
-      {
-        
-        isSubmitted ? <AdminDashboard /> : renderForm
-      }
-      </>
-    );
-  }
-}
+};
 
 export default App;

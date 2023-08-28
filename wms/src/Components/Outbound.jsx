@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 const Outbound = () => {
   const { register, handleSubmit, errors } = useForm();
   const [outboundData, setOutboundData] = useState([]);
+  const [enable,setEnable] = useState(false);
 
   const onSubmit = async ({ itemname }) => {
+    const warehouseid = localStorage.getItem(warehouseid);
     try {
       // Make an API request to send outbound item data to the backend
-      const response = await fetch('your-backend-api-url', {
+      const response = await fetch(`your-backend-api-url/${warehouseid}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +45,8 @@ const Outbound = () => {
           />
           
         </div>
-        <button type="submit" className="btn btn-primary">Deliver</button>
+        <button type="submit" className="btn btn-primary">Check</button>
+       {enable? <button type="submit" className="btn btn-primary">Deliver</button>: <button type="submit" className="btn btn-primary" disabled>Deliver</button>}
         <Link to='/admin'> <button type="button" class="btn" >Back</button></Link>
       </form>
 

@@ -1,42 +1,62 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import './AddArea.css';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const AddArea = () => {
-  const { register, handleSubmit, errors, reset } = useForm();
+  const { register,watch,reset } = useForm();
+  const [successMessage, setSuccessMessage] = useState('');
+  const handleSubmit = async (e) => {
+    e.preeventDafult();
+    e.target.reset();
+    const areaname = watch('areaname');
+    const numracks = watch('numracks');
+    const numLevelsperrack = watch('numLevelsperrack');
+    const levelheight = watch('levelheight');
+    const numblocksperlevel = watch('numblocksperlevel');
+    const blocklength = watch('blocklength');
+    const blockwidth = watch('blockwidth');
+    const warehouseid = localStorage.getItem('warehouseid');
 
-  const onSubmit = async (data) => {
     try {
-      // Make an API request to send data to the backend
-      const response = await fetch('your-backend-api-url', {
+      const areaData = {
+        areaname,
+        numracks,
+        numLevelsperrack,
+        levelheight,
+        numblocksperlevel,
+        blocklength,
+        blockwidth,
+        
+      };
+
+      // Send area data to server and receive response
+      const response = await fetch(`/api/addArea?warehouseId=${warehouseid}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(areaData),
       });
 
-      if (response.ok) {
-        reset();
-        alert('Area added successfully!');
+      const responseData = await response.json();
+      if (responseData.success) {
+        setSuccessMessage('Area added successfully!');
       } else {
-        const responseData = await response.json();
-        alert('Failed to add area: ' + responseData.error);
+        setSuccessMessage('Error adding area. Please try again.');
       }
     } catch (error) {
       console.error('Error adding area:', error);
+      setSuccessMessage('Error adding area. Please try again.');
     }
-  };
-//{errors.areaName && <p className="error-msg">{errors.areaName.message}</p>}
-//{errors.numRacks && <p className="error-msg">{errors.numRacks.message}</p>}
-// {errors.levelsPerRack && <p className="error-msg">{errors.levelsPerRack.message}</p>}
-// {errors.levelHeight && <p className="error-msg">{errors.levelHeight.message}</p>}
-// {errors.numBlocksPerLevel && <p className="error-msg">{errors.numBlocksPerLevel.message}</p>}
-//{errors.blockLength && <p className="error-msg">{errors.blockLength.message}</p>}
-//{errors.blockWidth && <p className="error-msg">{errors.blockWidth.message}</p>}
+
+  }
+  
+  
   return (
     <div className="add-area">
-      <form className="add-area-form" onSubmit={handleSubmit(onSubmit)}>
+      <form className="add-area-form" onSubmit={handleSubmit}>
         <h2>Congratulations for your Warehouse Registration! Now Add Area</h2>
         <div className="form-group">
           <input
@@ -54,7 +74,7 @@ const AddArea = () => {
             name="numracks"
             id="numracks"
             placeholder="Number of Racks"
-            ref={register("numracks",{ required: 'Number of racks is required' })}
+            {...register("numracks",{ required: 'Number of racks is required' })}
           />
           
         </div>
@@ -109,8 +129,8 @@ const AddArea = () => {
           />
           
         </div>
-        <button type="submit" className="btn btn-primary">Add Area</button>
-        <button type="button" className="btn btn-primary">Back</button>
+        <button type="submit" className="btn btn-primary" onSubmit={handleSubmit}>Add Area</button>
+        <button type="button" className="btn btn-primary"> <Link to='/admin'>Auditor</Link></button>
       </form>
     </div>
   );
