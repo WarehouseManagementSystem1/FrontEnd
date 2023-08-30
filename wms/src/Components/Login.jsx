@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [redirectTo, setRedirectTo] = useState(null);
-  const [invalid, setinvalid] = useState(false);
+  const[sucess,setsucess] = useState(false);
+  const {reset} = useForm();
   var userData;
 
 
@@ -46,29 +47,12 @@ const App = () => {
         userData = await response.json();
         // userData contains userId, username, ownerId, userType, etc.
         console.log(userData);
-        //setError(null);
-      } else {
-
-        console.log("Invalid email or password.")
-        //setError("Invalid email or password.");
-      }
-    } catch (error) {
-      setinvalid(true);
-      console.error("An error occurred during login:", error);
-      //setError("An error occurred during login.");
-    }
-
-
-    if (invalid) {
-      
-    }
-    else {
       localStorage.setItem('warehouseid', userData.warehouseId)
       localStorage.setItem('firstname',userData.firstname)
       localStorage.setItem('lastname',userData.lastname)
       localStorage.setItem('ownerid',userData.ownerid)
       localStorage.setItem('usertype',userData.userType)
-
+      reset();
 
       if (userData.userType === 'ADMIN') {
         setRedirectTo('admin');
@@ -79,15 +63,30 @@ const App = () => {
       else if (userData.userType === 'USER') {
         setRedirectTo('user');
       }
-      //reset();
-      //data.target.reset();
+        //setError(null);
+      } 
+      else if(response.status === 404) 
+      {
+        setsucess(true);
+        
+        console.log(sucess);
+        //console.log("ajit");
+       
+        console.log("Invalid email or password.")
+
+        //setError("Invalid email or password.");
+      }
+    } catch (error) {
+     
+      console.error("An error occurred during login:", error);
+      //setError("An error occurred during login.");
     }
 
+    
 
+    
 
-
-
-
+    
 
 
 
@@ -124,11 +123,12 @@ const App = () => {
             {errors.password && <p className="error">Password is required</p>}
           </div>
           <button type="submit">Login</button>
+          
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           <br></br>
           <div>
             {
-              invalid ? <div className="fail"><p>Login Fail</p></div>:<div></div>
+              sucess ? <div className="fail"><p>Login Fail</p></div>:<div></div>
             }
           </div>
           <div><p>Register New User <Link to="/signup">SignUp</Link></p></div>

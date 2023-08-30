@@ -42,6 +42,7 @@ const ViewInventory = () => {
       // Make an API request to fetch inventory data
       const response = await fetch(`http://localhost:8080/item/allitem/${warehouseid}`);
       const data = await response.json();
+      console.log(data);
       setInventoryData(data);
     } catch (error) {
       console.error('Error fetching inventory data:', error);
