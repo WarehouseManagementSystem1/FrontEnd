@@ -8,12 +8,13 @@ const AddArea = () => {
   const { register,watch,reset,formState } = useForm({"mode":"all"});
   const { errors, isSubmitting, isSubmitted, isSubmitSuccessful } = formState;
   const [successMessage, setSuccessMessage] = useState('');
+  const[redirect,setredirect] = useState(false);
   const handleSubmit = async (e) => {
     //e.preeventDafult();
    
     const areaname = watch('areaname');
     const numracks = watch('numracks');
-    const numLevelsperrack = watch('numLevelsperrack');
+    const numLevelsperrack = watch('levelsperrack');
     const levelheight = watch('levelheight');
     const numblocksperlevel = watch('numblocksperlevel');
     const blocklength = watch('blocklength');
@@ -33,8 +34,9 @@ const AddArea = () => {
       };
 
       // Send area data to server and receive response
-      const response = await fetch(`/api/addArea?warehouseId=${warehouseid}`, {
+      const response = await fetch(`http://localhost:8080/area/addarea/${warehouseid}`, {
         method: 'POST',
+        mode:'cors',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -59,7 +61,14 @@ const AddArea = () => {
   return (
     <div className="add-area">
       <form className="add-area-form" onSubmit={handleSubmit}>
-        <h2>Congratulations for your Warehouse Registration! Now Add Area</h2>
+        <div className='info'>
+          <p>
+            Owner Name:{localStorage.getItem('firstname')}<br></br>
+            Owner Id:{localStorage.getItem('ownerid')}<br></br>
+            WareHouse Id:{localStorage.getItem('warehouseid')}
+          </p>
+        </div>
+        <hr></hr>
         <div className="form-group">
           <input
             type="text"

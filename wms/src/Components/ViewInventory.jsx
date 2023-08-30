@@ -1,39 +1,63 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import '../Css/ViewInventory.css';
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 
 const ViewInventory = () => {
    const { register, handleSubmit, errors } = useForm();
    const [inventoryData, setInventoryData] = useState([]);
+   const[backlink,setblanklink] = useState();
+   
+   
+   var usertype = localStorage.getItem('usertype');
    const warehouseid = localStorage.getItem('warehouseid');
-  const onSubmit = async ({ warehouseid }) => {
+   console.log(usertype);
+   useEffect(() => { 
+    if(usertype === 'ADMIN')
+    {
+      //backlink = '/admin';
+      setblanklink('/admin')
+    }
+    else if(usertype === 'USER')
+    {
+      //backlink ='/userdash';
+      setblanklink('/userdash');
+    }
+    else
+    {
+      //backlink = '/auditdash';
+      setblanklink('/auditdash');
+    }
+
+   
+    }, []); 
+  const onSubmit = async () => {
     try {
+      const warehouseid = localStorage.getItem('warehouseid');
+      console.log(warehouseid);
+      
       // Make an API request to fetch inventory data
-      const response = await fetch(`your-backend-api-url/${warehouseid}`);
+      const response = await fetch(`http://localhost:8080/item/allitem/${warehouseid}`);
       const data = await response.json();
       setInventoryData(data);
     } catch (error) {
       console.error('Error fetching inventory data:', error);
     }
+    
+    
   };
+  
 
   return (
     <div className="view-inventory">
       <form className="view-inventory-form" onSubmit={handleSubmit(onSubmit)}>
-        <h2>View Inventory</h2>
-        <div className="form-group">
-          <input
-            type="number"
-            name="warehouseId"
-            id="warehouseId"
-            placeholder="Warehouse ID"
-            {...register("warehouseId",{ required: 'Warehouse ID is required' })}
-          />
-          
-        </div>
-        <button type="submit" className="btn btn-primary">Fetch Inventory</button>
+        
+        <button type="submit" className="btn btn-primary" onSubmit={()=>handleSubmit()}>Fetch Inventory</button>
+        <Link to={ backlink }><button type="button" className="btn btn-primary" >Back</button></Link>
+        
       </form>
 
       {inventoryData.length > 0 && (

@@ -1,69 +1,127 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import '../Css/Outbound.css';
-
-
+import '../Css/Outbound.css'; 
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-const Outbound = () => {
-  const { register, handleSubmit, formState } = useForm();
-  const { errors, isSubmitting, isSubmitted, isSubmitSuccessful } = formState;
-  const [outboundData, setOutboundData] = useState([]);
-  const [enable,setEnable] = useState(false);
 
-  const onSubmit = async ({ itemname }) => {
-    const warehouseid = localStorage.getItem(warehouseid);
+const Outbound = () => {
+  const [itemList, setItemList] = useState([]);
+  const [deliveryInfo, setDeliveryInfo] = useState(null);
+  const [itemid, setItemName] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [role,setrole] = useState();
+  var warehouseId = localStorage.getItem('warehouseid');
+  
+  useEffect(() => { 
+    const usertype = localStorage.getItem('usertype');
+    var warehouseId = localStorage.getItem('warehouseid');
+    if(usertype === 'ADMIN')
+    {
+      setrole('/admin')
+    }
+    else if(usertype === 'USER')
+    {
+      setrole('/userdash');
+    }
+    
+  }, []); 
+
+  const handleGetItemList = async () => {
     try {
-      // Make an API request to send outbound item data to the backend
-      const response = await fetch(`your-backend-api-url/${warehouseid}`, {
+      const response = await fetch(`http://localhost:8080/item/allitemidandname/${warehouseId}`); 
+      const data = await response.json();
+      
+      setItemList(data);
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching item list:', error);
+    }
+  };
+  console.log(itemid);
+  const handleDelivery = async () => {
+    try {
+      console.log(warehouseId);
+      const response = await fetch(`http://localhost:8080/item/outbound/${warehouseId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ itemname }),
+        body: JSON.stringify({ itemid }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setOutboundData(data);
+      if (response.status===200) {
+        const deliveryData = await response.json();
+        setDeliveryInfo(deliveryData);
+        setSuccessMessage('Item delivered successfully');
       } else {
-        const responseData = await response.json();
-        alert('Failed to deliver item: ' + responseData.error);
+        console.error('Failed to deliver item');
       }
     } catch (error) {
       console.error('Error delivering item:', error);
     }
   };
-  //{errors.itemname && <p className="error-msg">{errors.itemname.message}</p>}
-  return (
-    <div className="outbound">
-      <form className="outbound-form" onSubmit={handleSubmit(onSubmit)}>
-        <h2>Outbound Item</h2>
-        <div className="form-group">
-          <input
-            type="text"
-            name="itemname"
-            id="itemname"
-            placeholder="Item Name"
-            {...register("itemname",{ required: 'Item name is required' })}
-          />
-        {errors.itemname && <p className="error-msg">{errors.itemname.message}</p>}
-        </div>
-        <button type="submit" className="btn btn-primary">Check</button>
-       {enable? <button type="submit" className="btn btn-primary">Deliver</button>: <button type="submit" className="btn btn-primary" disabled>Deliver</button>}
-        <Link to='/admin'> <button type="button" class="btn" >Back</button></Link>
-      </form>
 
-      {outboundData.length > 0 && (
-        <div className="outbound-details">
-          <h3>Outbound Details</h3>
-          <ul>
-            {outboundData.map((item) => (
-              <li key={item.unit}>
-                Unit: {item.unit}, Area Name: {item.areaName}, Rack Number: {item.rackNumber},
-                Level Number: {item.levelNumber}, Block Number: {item.blockNumber}
-              </li>
+  return (
+    <div className="outbound-container">
+      <h1>Outbound Operation</h1>
+      <button onClick={handleGetItemList}>Get Item List</button>
+      <div className="item-list">
+        <h2>Item List</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Item ID</th>
+              <th>Item Name</th>
+              <th>Item Units</th>
+            </tr>
+          </thead>
+          <tbody>
+            {itemList.map((item) => (
+              <tr key={item.id}>
+                <td>{item.id}</td>
+                <td>{item.name}</td>
+                <td>{item.units}</td>
+              </tr>
             ))}
-          </ul>
+          </tbody>
+        </table>
+      </div>
+      <div className="delivery-form">
+        <h2>Deliver Item</h2>
+        <input
+          type="text"
+          placeholder="Enter Item id"
+          value={itemid}
+          
+          onChange={(e) => setItemName(e.target.value)}
+        />
+        <button onClick={handleDelivery} disabled={!itemList.length || !itemid}>
+          Deliver
+        </button>
+        <Link to ={role}><button>Back</button></Link>
+        
+        {successMessage && <p className="success">{successMessage}</p>}
+      </div>
+      {deliveryInfo && (
+        <div className="delivery-info">
+          <h2>Delivery Information</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Area Name</th>
+                <th>Rack Number</th>
+                <th>Level Number</th>
+                <th>Block Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{deliveryInfo.areaName}</td>
+                <td>{deliveryInfo.rackNumber}</td>
+                <td>{deliveryInfo.levelNumber}</td>
+                <td>{deliveryInfo.blockNumber}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       )}
     </div>

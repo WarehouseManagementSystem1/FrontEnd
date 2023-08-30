@@ -13,7 +13,7 @@ function SignUp() {
 
   const form = useForm({
     defaultValues: {
-      email: "wms@gmail.com",
+      email: "",
       password: "",
       confirmPassword: "",
     },
@@ -28,8 +28,8 @@ function SignUp() {
   const [passval, setpassval] = useState(false);
 
 
-
-  const username = watch('lastname');
+  const firstname = watch('firstname')
+  const lastname = watch('lastname');
   const usermail = watch('email');
   const contact = watch('contact')
   const pass = watch('password');
@@ -38,17 +38,19 @@ function SignUp() {
 
 
 
-
+  const[sucess,setsucess] = useState();
+  const[fail,setfail] = useState();
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const handleformsubmit = (event) => {
     event.preventDefault();
-
+//
 
     const datasubmit = {
      
-      username,
+      firstname,
+      lastname,
       usermail,
       contact,
       pass,
@@ -56,13 +58,14 @@ function SignUp() {
 
 
     }
-    if (username === "" || usermail === "" || contact === "" || password === "" || usermail === "wms@gmail.com") {
+    if (firstname === ""|| lastname==="" || usermail === "" || contact === "" || password === "" || usermail === "wms@gmail.com") {
       event.preventDefault();
       alert("Please fill all the fields correctly");
     }
     else {
-      fetch("https://jsonplaceholder.typicode.com/posts", {
+      fetch("http://localhost:8080/owner/register", {
         method: "POST",
+        mode: "cors",
         crossDomain: true,
         headers: {
           "Content-Type": "application/json",
@@ -70,24 +73,25 @@ function SignUp() {
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-         
-          username,
+          firstname,
+          lastname,
           usermail,
           contact,
           pass,
-          usertype,
         }),
       })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data, "userRegister");
-          /*if (data.status == "OK") {
-            alert("Registration Successful");
-          } else {
-            alert("Something went wrong");
-          }*/
+      .then((res) => {if(res.status===200){
+        setsucess(true);
+        alert("Registration Successful");
+        } else {
+          setfail(true);
+          alert("Something went wrong");
+      }return res.json();})
+      .then((data) => {
+        console.log(data, "userRegister");
 
         });
+        
     }
 
     event.target.reset();
@@ -104,6 +108,7 @@ function SignUp() {
       <div className="form">
         <form onSubmit={handleformsubmit} noValidate method='post' action='#'>
           <div className="form-body">
+            
 
             <div className='header'>
               <h2>SignUp</h2>
@@ -117,8 +122,16 @@ function SignUp() {
             
             <p className='error'>{errors.username?.message}</p>
             <div className="username">
-              <label className="form__label" for="lastname">User Name </label>
-              <input className="form__input" type="lastname" id="lastname" placeholder="User Name" name='lastname'{...register("lastname", {
+              <label className="form__label" for="firstname">First Name </label>
+              <input className="form__input" type="firstname" id="firstname" placeholder="First Name" name='firstname'{...register("firstname", {
+                required: "Please Check the LastName", maxLength: 10
+              })} />
+            </div>
+            <p className='error'>{errors.username?.message}</p>
+
+            <div className="username">
+              <label className="form__label" for="lastname">Last Name </label>
+              <input className="form__input" type="lastname" id="lastname" placeholder="Last Name" name='lastname'{...register("lastname", {
                 required: "Please Check the LastName", maxLength: 10
               })} />
             </div>
@@ -177,6 +190,11 @@ function SignUp() {
             <button type="reset" class="btn" onClick={() => reset()}>Reset</button>
             
           </div>
+          {
+            sucess?<div className='register'>
+            <p>User Registered Sucessfully</p>
+            </div>:<div className='fail'>{fail?<p>Registration Fail</p>:""}</div>
+          }
         </form>
         <DevTool control={control} />
         <hr></hr>

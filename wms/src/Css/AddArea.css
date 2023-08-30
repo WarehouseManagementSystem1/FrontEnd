@@ -62,3 +62,12 @@
     margin-top: 10px;
     font-size: 16px;
   }
+  .info p
+  {
+    text-align: left;
+    color: green;
+    text-align: justify;
+    border: 2px solid green;
+    padding: 10px;
+   
+  }

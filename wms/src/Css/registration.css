@@ -45,4 +45,14 @@ body{
     border: 2px solid black;
     margin: auto;
 }
+.register
+{
+    color: green;
+    text-align: center;
+}
 
+.fail
+{
+    color:red;
+    text-align: center;
+}

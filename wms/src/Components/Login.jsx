@@ -6,52 +6,32 @@ import { useForm } from "react-hook-form";
 import UserDashboard from "./UserDashboard";
 import AdminDashboard from "./AdminDashboard";
 import AuditDashboard from "./AuditDashboard";
+import { Link } from "react-router-dom";
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [redirectTo, setRedirectTo] = useState(null);
+  const [invalid, setinvalid] = useState(false);
+  var userData;
 
-  const database = [
-    {
-      email: "user@example.com",
-      password: "password",
-      role: "user",
-    },
-    {
-      email: "admin@example.com",
-      password: "adminpassword",
-      role: "admin",
-    },
-    {
-      email: "auditor@example.com",
-      password: "auditorpassword",
-      role: "auditor",
-      
-    },
-    {
-      email: "chavanajit6282@gmail.com",
-      password: "A@jit@777",
-      role: "admin",
-      
-    },
-    
-  ];
 
-  const { watch , register, handleSubmit, formState: { errors } } = useForm();
+  const { watch, register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data) => {
-    const user = database.find((user) => user.email === data.email);
+  const onSubmit = async (data) => {
+    const email = watch('email');
+    const password = watch('password');
 
-    if (user && user.password === data.password) {
-      setErrorMessage("");
-      setRedirectTo(user.role);
-    } else {
-      setErrorMessage("Invalid email or password");
-    }
+
+    /* if (user && user.password === data.password) {
+       setErrorMessage("");
+       setRedirectTo(user.role);
+     } else {
+       setErrorMessage("Invalid email or password");
+     }*/
     localStorage.setItem("email", watch('email'));
 
-    /**try {
-      const response = await fetch("your-api-endpoint/login", {
+    try {
+      const response = await fetch("http://localhost:8080/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,51 +43,61 @@ const App = () => {
       });
 
       if (response.ok) {
-        const userData = await response.json();
+        userData = await response.json();
         // userData contains userId, username, ownerId, userType, etc.
         console.log(userData);
-        setError(null);
+        //setError(null);
       } else {
-        setError("Invalid email or password.");
+
+        console.log("Invalid email or password.")
+        //setError("Invalid email or password.");
       }
     } catch (error) {
+      setinvalid(true);
       console.error("An error occurred during login:", error);
-      setError("An error occurred during login.");
-     }
+      //setError("An error occurred during login.");
+    }
 
-     const email = watch('email');
-     const password = watch('password');
-     if(email != userData.email || password != userData.password)
-     {
-      alert('Invalid email or password');
+
+    if (invalid) {
       
-     }
-     else
-     {
-      
-      
-      if(userData.userType === 'Admin') {
+    }
+    else {
+      localStorage.setItem('warehouseid', userData.warehouseId)
+      localStorage.setItem('firstname',userData.firstname)
+      localStorage.setItem('lastname',userData.lastname)
+      localStorage.setItem('ownerid',userData.ownerid)
+      localStorage.setItem('usertype',userData.userType)
+
+
+      if (userData.userType === 'ADMIN') {
         setRedirectTo('admin');
       }
-      else if(userData.userType === 'Auditor') {
+      else if (userData.userType === 'AUDITOR') {
         setRedirectTo('auditor');
       }
-      else if(userData.userType === 'User') {
+      else if (userData.userType === 'USER') {
         setRedirectTo('user');
       }
+      //reset();
+      //data.target.reset();
+    }
 
-      
-     }
-     
-     
-     
-     
-     */
+
+
+
+
+
+
+
+
+
+
   };
 
   return (
     <div className="form-container">
-      
+
       {redirectTo ? (
         <div className="dashboard-container">
           {redirectTo === "user" && <UserDashboard />}
@@ -135,8 +125,17 @@ const App = () => {
           </div>
           <button type="submit">Login</button>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
+          <br></br>
+          <div>
+            {
+              invalid ? <div className="fail"><p>Login Fail</p></div>:<div></div>
+            }
+          </div>
+          <div><p>Register New User <Link to="/signup">SignUp</Link></p></div>
         </form>
+        
       )}
+      
     </div>
   );
 };

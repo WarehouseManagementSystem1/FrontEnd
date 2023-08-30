@@ -79,7 +79,7 @@
         position: absolute;
         display: block;
         list-style: none;
-        background-color: blueviolet;
+        background-color:greenyellow;
         left: 0;
         top: 75px;
         transition: all 0.5s ease-out;
@@ -114,7 +114,7 @@
         position: absolute;
         font-size: 30px;
         color: white;
-        background-color: brown;
+        background-color:greenyellow;
         border: none;
         outline: none;
         top: 15px;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import '../Css/Audit.css';
+import { Link } from 'react-router-dom';
 
 
 const Audit = () => {
@@ -133,6 +134,7 @@ const Audit = () => {
         )}
 
         <button type="submit" className="btn btn-primary">Transfer</button>
+        <Link to='/auditdash'><button type="button" className="btn btn-primary" >Back</button></Link>
       </form>
     </div>
   );
