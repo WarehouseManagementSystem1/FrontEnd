@@ -53,14 +53,14 @@ const Log = () => {
             <th>Transcation Type</th>
             <th>Item Name</th>
             <th>Item Id</th>
-            <th>Initial Area Id</th>
-            <th>Initial Rack Id</th>
-            <th>Initial Level Id</th>
-            <th>Initial Block Id</th>
-            <th>Final Area Id</th>
-            <th>Final Rack Id</th>
-            <th>Final Level Id</th>
-            <th>Final Block Id</th>
+            <th>Initial Area Name</th>
+            <th>Initial Rack Number</th>
+            <th>Initial Level Number</th>
+            <th>Initial Block Number</th>
+            <th>Final Area Name</th>
+            <th>Final Rack Number</th>
+            <th>Final Level Number</th>
+            <th>Final Block Number</th>
           </tr>
         </thead>
         <tbody>
@@ -69,14 +69,14 @@ const Log = () => {
               <td>{log.transactionType}</td>
               <td>{log.itemName}</td>
               <td>{log.itemId}</td>
-              <td>{log.initialAreaId}</td>
-              <td>{log.initialRackId}</td>
-              <td>{log.initialLevelId}</td>
-              <td>{log.initialBlockId}</td>
-              <td>{log.finalAreaId}</td>
-              <td>{log.finalRackId}</td>
-              <td>{log.finalLevelId}</td>
-              <td>{log.finalBlockId}</td>
+              <td>{log.initialAreaName}</td>
+              <td>{log.initialRackNumber}</td>
+              <td>{log.initialLevelNumber}</td>
+              <td>{log.initialBlockNumber}</td>
+              <td>{log.finalAreaName}</td>
+              <td>{log.finalRackNumber}</td>
+              <td>{log.finalLevelNumber}</td>
+              <td>{log.finalBlockNumber}</td>
             </tr>
           ))}
         </tbody>

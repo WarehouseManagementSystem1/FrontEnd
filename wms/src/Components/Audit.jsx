@@ -201,22 +201,25 @@ function Audit() {
           <thead>
             <tr>
               <th>Item ID</th>
-              <th>Block ID</th>
-              <th>Level ID</th>
-              <th>Rack ID</th>
-              <th>Warehouse ID</th>
-              <th>Area ID</th>
+              <th>Item Name</th>
+              <th>Area Name</th>
+              <th>Rack Number</th>
+              <th>Level Number</th>
+              <th>Block Number</th>
+              
+              
+              
             </tr>
           </thead>
           <tbody>
           {transferData && (
       <tr>
         <td>{transferData.itemId}</td>
-        <td>{transferData.blockId}</td>
-        <td>{transferData.levelId}</td>
-        <td>{transferData.rackId}</td>
-        <td>{transferData.warehouseId}</td>
-        <td>{transferData.areaId}</td>
+        <td>{transferData.itemName}</td>
+        <td>{transferData.areaName}</td>
+        <td>{transferData.rackNumber}</td>
+        <td>{transferData.levelNumber}</td>
+        <td>{transferData.blockNumber}</td>
       </tr>
     )}
           </tbody>
