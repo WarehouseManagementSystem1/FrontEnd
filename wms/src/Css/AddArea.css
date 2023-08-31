@@ -1,7 +1,12 @@
 /* AddArea.css */
-
+.msg{
+  color: red;
+}
+.msg1{
+  color: green;
+}
 .add-area {
-    margin-top: 75px;
+    margin-top: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;

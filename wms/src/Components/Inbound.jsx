@@ -12,10 +12,13 @@ const Inbound = () => {
   const [rackNumber, setRackNumber] = useState('');
   const [levelNumber, setLevelNumber] = useState('');
   const [blockNumber, setBlockNumber] = useState('');
-  const  [enable,setEnable] = useState(true);
+  const  [enable,setEnable] = useState(false);
   const [back,setback] = useState('');
+  const[check,setcheck] = useState(false);
+  const[add,setadd] = useState(false);
+  const[msg,setmsg] = useState('');
   const { register,watch,formState } = useForm({mode:"all"});
-  const { errors, isSubmitting, isSubmitted, isSubmitSuccessful } = formState;
+  const { errors, isSubmitting, isSubmitted, isSubmitSuccessful,reset } = formState;
   const itemName = watch('itemname');
   const unitsInItem  = watch('units');
   const itemLength = watch('itemlength');
@@ -25,19 +28,21 @@ const Inbound = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!itemName || !unitsInItem || !itemLength || !itemHeight || !itemWidth) {
+      setmsg("Please fill in all the required fields");
+      setcheck(false);
+      setEnable(false);
+      return; 
+    }
     const usertype = localStorage.getItem('usertype');
     if(usertype === "ADMIN")
     {
       setback('/admin');
-
-
     }
     else
     {
       setback('/userdash');
     }
-
-    // Assuming you have an API endpoint to handle inbound data and provide area/rack/level/block info
     const apiUrl = `http://localhost:8080/item/inbound/check/${warehouseId}`;
 
     try {
@@ -61,24 +66,19 @@ const Inbound = () => {
       });
 
       if (response.status===200) {
-        //const responseData = await response.json();
-        //const { areaName, rackNumber, levelNumber, blockNumber } = responseData;
-
-        //setAreaName(areaName);
-        //setRackNumber(rackNumber);
-        //setLevelNumber(levelNumber);
-        //setBlockNumber(blockNumber);
-
         console.log('Data verified successfully');
+        setmsg("Data verified successfully");
+        setcheck(true);
         setEnable(true);
       } else {
         console.error('Error verifying data:', response.statusText);
+        setmsg("Error verifying data");
         setEnable(false);
       }
     } catch (error) {
       console.error('Error verifying data:', error);
     }
-    //e.target.reset();
+    
     
   
   };
@@ -113,6 +113,7 @@ const Inbound = () => {
       setBlockNumber(blockNumber);
 
       console.log('Data sent and received successfully:', responseData);
+      setmsg('Data sent successfully');
       setEnable(true);
     } else {
       console.error('Error receiving data:', response.statusText);
@@ -123,7 +124,7 @@ const Inbound = () => {
   }
 
 
-    //e.target.reset();
+    reset();
 
   }
 
@@ -133,6 +134,7 @@ const Inbound = () => {
       <form className="inbound-form" onSubmit={handleSubmit}>
         <h2>Inbound Item</h2>
         <div className="form-group">
+          <label>Item Name</label>
           <input
             type="text"
             name="itemname"
@@ -143,6 +145,7 @@ const Inbound = () => {
            {errors.itemname && <p className="error-msg">{errors.itemname.message}</p>}
         </div>
         <div className="form-group">
+           <label>Units</label>
           <input
             type="number"
             name="units"
@@ -156,6 +159,7 @@ const Inbound = () => {
           {errors.units && <p className="error-msg">{errors.units.message}</p>}
         </div>
         <div className="form-group">
+          <label>Item length</label>
           <input
             type="number"
             name="itemlength"
@@ -169,6 +173,7 @@ const Inbound = () => {
         {errors.itemlength && <p className="error-msg">{errors.itemlength.message}</p>}  
         </div>
         <div className="form-group">
+          <label>Item Height</label>
           <input
             type="number"
             name="itemheight"
@@ -182,6 +187,7 @@ const Inbound = () => {
         {errors.itemheight && <p className="error-msg">{errors.itemheight.message}</p>}  
         </div>
         <div className="form-group">
+          <label>Item Width</label>
           <input
             type="number"
             name="itemwidth"
@@ -197,7 +203,14 @@ const Inbound = () => {
          <button type="submit" className="btn btn-primary">Check</button>
         {enable?<button type="submit" className="btn btn-primary" onClick={()=>submitData()}>Submit</button>:<button type="submit" className="btn btn-primary" disabled>Submit</button>}
         <Link to={ back }> <button type="button" class="btn" >Back</button></Link>
-      </form>
+        {
+          <div>
+            <p>
+              {msg}
+            </p>
+          </div>
+        }
+        </form>
     </div>
   );
 };

@@ -9,11 +9,13 @@ const Warehouse = () => {
   const { register, errors, watch } = useForm();
   const [sucess, setsucess] = useState(false);
   const [enable, setenable] = useState(false);
+  const[msg,setmsg] = useState(false);
   useEffect(() => {
     const warehouseid = localStorage.getItem('warehouseid');
 
     if (warehouseid > 0) {
       setenable(true);
+      setmsg(true)
     }
     else {
       setenable(false);
@@ -50,6 +52,7 @@ const Warehouse = () => {
           const data = await response.json();
           console.log('Response data:', data);
           setsucess(true);
+          alert("WareHouse Added SucessFully");
           localStorage.setItem('warehouseid', data.warehouseid);
         } catch (error) {
           console.error('Error parsing response JSON:', error);
@@ -99,6 +102,7 @@ const Warehouse = () => {
           <button type="submit" className="btn btn-primary">Add Warehouse</button>
          
           <Link to='/admin'> <button type="button" class="btn" >Back</button></Link>
+          
         </form>)}
     </div>
   );

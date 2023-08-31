@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../Css/Audit.css';
+import { Link } from 'react-router-dom';
 
 function Audit() {
   const [warehouseId, setWarehouseId] = useState();
@@ -226,6 +227,7 @@ function Audit() {
         </table>
         <p>{message}</p>
       </div>
+      <Link to='/auditdash'> <button type="button" class="btn" >Back</button></Link>
     </div>
   );
 }

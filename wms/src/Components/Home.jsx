@@ -14,21 +14,7 @@ function Home() {
            </p></bold>
 
            </div>
-           <div>
-            <h5>Testing Purpose</h5>
-            <Link to="/adduser">Adduser</Link><br></br>
-            <Link to="/inbound">Inbound</Link><br></br>
-            <Link to="/outbound">Outbound</Link><br></br>
-            <Link to='/audit'>Audit</Link><br></br>
-            
-            <Link to='/auditdash'>Auditor</Link><br></br>
-            <Link to='/userdash'>User</Link><br></br>
-            <Link to='/warehouse'>AddWarehouse</Link><br></br>
-            <Link to='/addarea'>AddArea</Link>
-            
-            
-           </div>
-
+           
 
            </>
  

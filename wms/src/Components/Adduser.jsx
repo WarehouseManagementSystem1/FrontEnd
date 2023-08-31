@@ -227,9 +227,7 @@ function AddUser() {
         </form>
         <DevTool control={control} />
         <hr></hr>
-        <div>
-          <p>Already Have Account ?<Link to="/login">Login</Link></p>
-        </div>
+        
 
 
       </div>)}

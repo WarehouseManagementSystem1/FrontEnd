@@ -5,7 +5,7 @@ import '../App.css';
 import '../Css/NavBar.css';
 
 
-import logoo from './wms.png';
+import logoo from './wmsLogo.jpg';
 
 function NavBar() {
   // <h3 className='logo'>WMS</h3>

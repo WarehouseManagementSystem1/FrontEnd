@@ -61,7 +61,7 @@ const ViewInventory = () => {
         
       </form>
 
-      {inventoryData.length > 0 && (
+      {inventoryData.length > 0 ? (
         <table className="inventory-table">
           <thead>
             <tr>
@@ -88,7 +88,7 @@ const ViewInventory = () => {
             ))}
           </tbody>
         </table>
-      )}
+      ):(<p>No Data Found In Inventory </p>)}
     </div>
   );
 };
